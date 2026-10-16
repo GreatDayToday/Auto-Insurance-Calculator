@@ -1,10 +1,106 @@
-Auto Insurance Premium Calculator
-Driver Age
-Vehicle Value ($)
-Coverage Level
 
-Liability Only
-Accidents in Last 3 Years
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Insurance Premium Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f3f6fa;
+      color: #222;
+    }
+    main {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+    }
+    label {
+      display: block;
+      margin-top: 16px;
+    }
+    input, select, button {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+    }
+    button {
+      margin-top: 22px;
+      background: #1769aa;
+      color: white;
+      border: 0;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #result {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Auto Insurance Calculator</h1>
+    <p>Estimate your annual auto insurance premium.</p>
 
-0
- Calculate Premium
+    <form id="calculator">
+      <label for="age">Driver Age</label>
+      <input id="age" type="number" min="16" max="100"
+             required placeholder="Enter your age">
+
+      <label for="vehicle">Vehicle Value ($)</label>
+      <input id="vehicle" type="number" min="1"
+             required placeholder="Enter vehicle value">
+
+      <label for="coverage">Coverage Level</label>
+      <select id="coverage">
+        <option value="0.01">Liability Only</option>
+        <option value="0.025">Standard Coverage</option>
+        <option value="0.04">Comprehensive Coverage</option>
+      </select>
+
+      <label for="accidents">Accidents in Last 3 Years</label>
+      <select id="accidents">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3 or more</option>
+      </select>
+
+      <button type="submit">Calculate Premium</button>
+    </form>
+
+    <p id="result" aria-live="polite"></p>
+    <p><small>Illustrative estimate only, not an insurance quote.</small></p>
+  </main>
+
+  <script>
+    document.getElementById("calculator").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const age = Number(document.getElementById("age").value);
+      const vehicle = Number(document.getElementById("vehicle").value);
+      const rate = Number(document.getElementById("coverage").value);
+      const accidents = Number(document.getElementById("accidents").value);
+
+      let premium = vehicle * rate;
+
+      if (age < 25) premium *= 1.30;
+      if (age >= 65) premium *= 1.15;
+      premium *= 1 + accidents * 0.20;
+
+      document.getElementById("result").textContent =
+        "Estimated annual premium: $" +
+        premium.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+    });
+  </script>
+</body>
+</html>
